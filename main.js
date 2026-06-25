@@ -781,7 +781,7 @@ function showToast(message) {
 // Live Chat
 function initChat() {
   const toggle = document.getElementById('chatToggle');
-  const window = document.getElementById('chatWindow');
+  const chatWindowEl = document.getElementById('chatWindow');
   const close = document.getElementById('chatClose');
   const form = document.getElementById('chatForm');
   const messages = document.getElementById('chatMessages');
@@ -795,8 +795,8 @@ function initChat() {
     'Is there anything else I can help you with?'
   ];
 
-  toggle.addEventListener('click', () => window.classList.toggle('open'));
-  close.addEventListener('click', () => window.classList.remove('open'));
+  toggle.addEventListener('click', () => chatWindowEl.classList.toggle('open'));
+  close.addEventListener('click', () => chatWindowEl.classList.remove('open'));
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
