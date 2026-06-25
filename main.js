@@ -276,24 +276,49 @@ function initNavigation() {
   const header = document.getElementById('header');
   const navToggle = document.getElementById('navToggle');
   const navMenu = document.getElementById('navMenu');
+  const navOverlay = document.getElementById('navOverlay');
   const navLinks = document.querySelectorAll('.nav-link');
+
+  const closeMenu = () => {
+    navToggle.classList.remove('active');
+    navMenu.classList.remove('open');
+    navOverlay?.classList.remove('active');
+    document.body.classList.remove('menu-open');
+  };
+
+  const openMenu = () => {
+    navToggle.classList.add('active');
+    navMenu.classList.add('open');
+    navOverlay?.classList.add('active');
+    document.body.classList.add('menu-open');
+  };
 
   window.addEventListener('scroll', () => {
     header.classList.toggle('scrolled', window.scrollY > 50);
   });
 
   navToggle.addEventListener('click', () => {
-    navToggle.classList.toggle('active');
-    navMenu.classList.toggle('open');
+    if (navMenu.classList.contains('open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
   });
+
+  navOverlay?.addEventListener('click', closeMenu);
 
   navLinks.forEach(link => {
     link.addEventListener('click', () => {
-      navToggle.classList.remove('active');
-      navMenu.classList.remove('open');
+      closeMenu();
       navLinks.forEach(l => l.classList.remove('active'));
       link.classList.add('active');
     });
+  });
+
+  document.querySelector('.nav-mobile-cta a')?.addEventListener('click', closeMenu);
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 991) closeMenu();
   });
 
   const sections = document.querySelectorAll('section[id]');
@@ -533,17 +558,43 @@ function setupCarousel(carouselId, prevId, nextId, dotsId, autoPlay = false) {
   const dotsContainer = document.getElementById(dotsId);
   if (!carousel) return;
 
+  const wrapper = carousel.parentElement;
   const cards = carousel.children;
   if (!cards.length) return;
 
   let currentIndex = 0;
   let cardsPerView = getCardsPerView();
   let totalSlides = Math.ceil(cards.length / cardsPerView);
+  let touchStartX = 0;
+  let touchEndX = 0;
 
   function getCardsPerView() {
-    if (window.innerWidth <= 768) return 1;
+    if (window.innerWidth <= 991) return 1;
     if (window.innerWidth <= 1200) return 2;
     return 3;
+  }
+
+  function getSlideWidth() {
+    return wrapper.getBoundingClientRect().width;
+  }
+
+  function setCardWidths() {
+    const slideWidth = getSlideWidth();
+    const isMobile = window.innerWidth <= 991;
+    const isTablet = window.innerWidth > 991 && window.innerWidth <= 1200;
+
+    Array.from(cards).forEach(card => {
+      if (isMobile) {
+        card.style.flex = `0 0 ${slideWidth}px`;
+        card.style.width = `${slideWidth}px`;
+      } else if (isTablet) {
+        card.style.flex = '0 0 calc(50% - 14px)';
+        card.style.width = '';
+      } else {
+        card.style.flex = '0 0 calc(33.333% - 19px)';
+        card.style.width = '';
+      }
+    });
   }
 
   function createDots() {
@@ -559,8 +610,12 @@ function setupCarousel(carouselId, prevId, nextId, dotsId, autoPlay = false) {
   }
 
   function updateCarousel() {
-    const cardWidth = cards[0].offsetWidth + 28;
-    carousel.style.transform = `translateX(-${currentIndex * cardWidth * cardsPerView}px)`;
+    const slideWidth = getSlideWidth();
+    const gap = parseInt(getComputedStyle(carousel).gap, 10) || 28;
+    const offset = window.innerWidth <= 991
+      ? currentIndex * (slideWidth + gap)
+      : currentIndex * slideWidth;
+    carousel.style.transform = `translateX(-${offset}px)`;
 
     if (dotsContainer) {
       dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, i) => {
@@ -570,7 +625,7 @@ function setupCarousel(carouselId, prevId, nextId, dotsId, autoPlay = false) {
   }
 
   function goToSlide(index) {
-    currentIndex = index;
+    currentIndex = Math.max(0, Math.min(index, totalSlides - 1));
     updateCarousel();
   }
 
@@ -584,7 +639,24 @@ function setupCarousel(carouselId, prevId, nextId, dotsId, autoPlay = false) {
     updateCarousel();
   }
 
+  function handleSwipe() {
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) < 50) return;
+    if (diff > 0) nextSlide();
+    else prevSlide();
+  }
+
+  carousel.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  carousel.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }, { passive: true });
+
   createDots();
+  setCardWidths();
   updateCarousel();
 
   if (prevId) document.getElementById(prevId)?.addEventListener('click', prevSlide);
@@ -593,8 +665,8 @@ function setupCarousel(carouselId, prevId, nextId, dotsId, autoPlay = false) {
   let autoPlayInterval;
   if (autoPlay) {
     autoPlayInterval = setInterval(nextSlide, 5000);
-    carousel.parentElement.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
-    carousel.parentElement.addEventListener('mouseleave', () => {
+    wrapper.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+    wrapper.addEventListener('mouseleave', () => {
       autoPlayInterval = setInterval(nextSlide, 5000);
     });
   }
@@ -603,6 +675,7 @@ function setupCarousel(carouselId, prevId, nextId, dotsId, autoPlay = false) {
     cardsPerView = getCardsPerView();
     totalSlides = Math.ceil(cards.length / cardsPerView);
     currentIndex = Math.min(currentIndex, totalSlides - 1);
+    setCardWidths();
     createDots();
     updateCarousel();
   });
@@ -646,6 +719,7 @@ function setMinDate() {
 function initSearch() {
   const input = document.getElementById('searchInput');
   const results = document.getElementById('searchResults');
+  if (!input || !results) return;
 
   input.addEventListener('input', () => {
     const query = input.value.toLowerCase().trim();
