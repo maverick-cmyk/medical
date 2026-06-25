@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="MediCare Plus - Trusted medical professionals delivering compassionate, personalized healthcare with modern technology.">
   <title>MediCare Plus | Premium Healthcare Clinic</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,6 +47,14 @@
         <span>MediCare<span class="logo-accent">Plus</span></span>
       </a>
 
+      <!-- <div class="nav-search" id="navSearch">
+        <i class="fas fa-search"></i>
+        <input type="search" placeholder="Search doctors, services..." id="searchInput">
+        <div class="search-results" id="searchResults"></div>
+      </div> -->
+
+      <div class="nav-overlay" id="navOverlay"></div>
+
       <ul class="nav-menu" id="navMenu">
         <li><a href="#home" class="nav-link active">Home</a></li>
         <li><a href="#about" class="nav-link">About</a></li>
@@ -55,6 +63,9 @@
         <li><a href="#services" class="nav-link">Services</a></li>
         <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
         <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li class="nav-mobile-cta">
+          <a href="#appointment" class="btn btn-primary btn-block">Book Appointment</a>
+        </li>
       </ul>
 
       <div class="nav-actions">
@@ -526,47 +537,6 @@
       </div>
     </section>
 
-    <!-- <!-- Patient Dashboard Preview -->
-    <section class="dashboard-preview section">
-      <div class="container">
-        <div class="section-header reveal">
-          <span class="section-tag">Patient Portal</span>
-          <h2 class="section-title">Your Health Dashboard</h2>
-          <p class="section-desc centered">Manage appointments, view reports, and track your health journey — all in one place.</p>
-        </div>
-        <div class="dashboard-mockup glass reveal">
-          <div class="dashboard-sidebar">
-            <div class="dash-nav-item active"><i class="fas fa-th-large"></i> Dashboard</div>
-            <div class="dash-nav-item"><i class="fas fa-calendar"></i> Appointments</div>
-            <div class="dash-nav-item"><i class="fas fa-file-medical"></i> Reports</div>
-            <div class="dash-nav-item"><i class="fas fa-pills"></i> Prescriptions</div>
-            <div class="dash-nav-item"><i class="fas fa-heart-pulse"></i> Vitals</div>
-          </div>
-          <div class="dashboard-main">
-            <div class="dash-cards">
-              <div class="dash-card"><i class="fas fa-calendar-check"></i><span>Next Appointment</span><strong>Mar 28, 10:00 AM</strong></div>
-              <div class="dash-card"><i class="fas fa-file-alt"></i><span>Pending Reports</span><strong>2 Reports</strong></div>
-              <div class="dash-card"><i class="fas fa-heartbeat"></i><span>Health Score</span><strong>92/100</strong></div>
-            </div>
-            <div class="dash-chart">
-              <h4>Health Trends</h4>
-              <div class="mini-chart">
-                <div class="chart-bar" style="--h: 60%"></div>
-                <div class="chart-bar" style="--h: 75%"></div>
-                <div class="chart-bar" style="--h: 55%"></div>
-                <div class="chart-bar" style="--h: 80%"></div>
-                <div class="chart-bar" style="--h: 70%"></div>
-                <div class="chart-bar" style="--h: 90%"></div>
-                <div class="chart-bar" style="--h: 85%"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="text-center reveal">
-          <a href="#" class="btn btn-primary btn-lg"><i class="fas fa-download"></i> Download Medical Reports</a>
-        </div>
-      </div>
-    </section> -->
 
     <!-- Testimonials -->
     <section class="testimonials section" id="testimonials">
