@@ -7,14 +7,19 @@ A fully responsive, modern healthcare website for a multi-speciality clinic.
 Open `index.html` in your browser, or run a local server:
 
 ```bash
-# Python
 python -m http.server 8080
-
-# Node.js (if npx available)
-npx serve .
 ```
 
 Then visit `http://localhost:8080`
+
+## Files (all in root — no subfolders)
+
+```
+index.html    — Main page
+styles.css    — All styles, dark mode, animations
+main.js       — Interactivity and dynamic content
+README.md     — This file
+```
 
 ## Features
 
@@ -41,23 +46,16 @@ Then visit `http://localhost:8080`
 - Newsletter subscription
 - Search bar (doctors, services, departments)
 
-## Structure
-
-```
-Doctor/
-├── index.html
-├── css/
-│   └── styles.css
-└── js/
-    └── main.js
-```
-
 ## Customization
 
 - **Colors**: Edit CSS variables in `:root` at the top of `styles.css`
-- **Doctors/Departments**: Edit data arrays in `js/main.js`
+- **Doctors/Departments**: Edit data arrays at the top of `main.js`
 - **Contact info**: Update the contact section in `index.html`
 - **Images**: Replace Unsplash URLs with your own images
+
+## GitHub Pages
+
+Push all four files to your repo root. Enable GitHub Pages from the `main` branch — the site will work at `https://yourusername.github.io/your-repo/`.
 
 ## Browser Support
 
